@@ -29,3 +29,14 @@ document.addEventListener('keydown',event=>{if(event.key==='Escape'&&modal.class
 
 const observer=new IntersectionObserver(entries=>entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add('in-view');observer.unobserve(entry.target)}}),{threshold:.1});
 document.querySelectorAll('.values article,.review-card,.visit-copy,.product-card').forEach(el=>observer.observe(el));
+
+document.querySelectorAll('.gallery-filter').forEach(button=>button.addEventListener('click',()=>{
+  document.querySelectorAll('.gallery-filter').forEach(filter=>{filter.classList.remove('active');filter.setAttribute('aria-pressed','false')});
+  button.classList.add('active');button.setAttribute('aria-pressed','true');
+  const category=button.dataset.galleryFilter;
+  document.querySelectorAll('.gallery-card').forEach((card,index)=>{
+    const visible=category==='tous'||card.dataset.galleryCategory===category;
+    card.hidden=!visible;
+    if(visible){card.style.animation='none';void card.offsetWidth;card.style.animation=`rise .38s ${Math.min(index,8)*.035}s both`}
+  });
+}));
